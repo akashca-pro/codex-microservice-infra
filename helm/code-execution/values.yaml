@@ -1,0 +1,63 @@
+replicaCount: 1
+
+image:
+  repository: akashcapro/codex-code-execution-service-k8s
+  tag: "0.0.4"
+  pullPolicy: IfNotPresent
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+containers:
+  app:
+    env:
+      - name: CODE_EXECUTION_SERVICE_METRICS_PORT
+        value: "9104"
+      - name: REDIS_URL
+        value: "redis://redis:6379"
+      - name: KAFKA_IDEMPOTENCY_KEY_EXPIRY
+        value: "600"
+      - name: KAFKA_CODE_EXECUTION_SERVICE_CLIENT_ID
+        value: "code-execution-service"
+      - name: KAFKA_BROKERS
+        value: "kafka:9092"
+      - name: KAFKA_CODE_EXECUTION_SERVICE_GROUP_ID
+        value: "code-execution-group"
+      - name: KAFKA_MAX_RETRIES
+        value: "3"
+      - name: KAFKA_RETRY_QUEUE_CAP
+        value: "100000"
+      - name: WORKER_IMAGE_NAME
+        value: "akashcapro/codex-sandbox"
+      - name: EXECUTION_TIMEOUT
+        value: "10000"
+      - name: MAX_OUTPUT_LENGTH
+        value: "5000"
+      - name: CONTAINER_POOL_SIZE
+        value: "4"
+      - name: DOCKER_HOST
+        value: "localhost"
+      - name: DOCKER_PORT
+        value: "2375"
+      - name: DOCKER_LOCAL
+        value: "/var/run/docker.sock"
+      - name: OTEL_SERVICE_NAME
+        value: "code-execution-service"
+
+  dind:
+    env:
+      - name: DOCKER_TLS_CERTDIR
+        value: ""
+    resources:
+      requests:
+        cpu: "300m"
+        memory: "512Mi"
+      limits:
+        cpu: "1"
+        memory: "1Gi"
+        

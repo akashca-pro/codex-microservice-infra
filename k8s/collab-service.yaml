@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: collab-service
+  namespace: app-services
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app : collab-service
+  template:
+    metadata:
+      labels:
+        app: collab-service
+    spec:
+      initContainers:
+        - name: wait-for-redis
+          image: busybox:1.36.1
+          command:
+            - sh
+            - -c
+            - |
+              echo "Waiting for Redis to be available on port 6379..."
+              while ! nc -z -w 1 redis 6379; do
+                echo "Redis not yet ready. Sleeping for 5 seconds..."
+                sleep 5
+              done
+              echo "Redis is ready!"
+          env:
+            - name: REDIS_HOST
+              value: "redis"
+          resources:
+            requests:
+              cpu: 10m
+              memory: 10Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+      containers:
+        - name: collab-service
+          image: akashcapro/codex-collab-service:0.0.4
+          imagePullPolicy: Always
+          ports: 
+            - containerPort: 50054
+            - containerPort: 5001
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          env:
+            - name: JWT_INVITE_TOKEN_EXPIRY
+              value: "24h"
+            - name: SOCKET_MAP_CACHE_EXPIRY
+              value: "3600"
+            - name: GRPC_COLLAB_SERVICE_URL
+              value: "0.0.0.0:50054"
+            - name: TOKEN_NAME
+              value: "accessToken"
+            - name: REDIS_URL
+              value: "redis://redis:6379" 
+            - name: CLIENT_URL
+              value: "http://codex.com:5173"
+            - name: KAFKA_COLLAB_SERVICE_CLIENT_ID
+              value: "collab-service"
+            - name: KAFKA_BROKERS
+              value: 'kafka:9092'
+            - name: KAFKA_MAX_RETRIES
+              value: "3"
+            - name: KAFKA_RETRY_QUEUE_CAP
+              value: "100000"
+            - name: PODNAME
+              value: "local"
+            - name: SOCKET_PORT
+              value: "5001"
+            - name: SNAPSHOT_TTL_SECONDS
+              value: "172800"
+          envFrom:
+            - secretRef:
+                name: app-secrets
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: collab-service
+  namespace: app-services
+spec:
+  selector:
+    app: collab-service
+  ports:
+  - name: http
+    protocol: TCP
+    port: 5001
+    targetPort: 5001
+  - name: grpc
+    protocol: TCP
+    port: 50054
+    targetPort: 50054

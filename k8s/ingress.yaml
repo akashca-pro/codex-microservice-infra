@@ -1,0 +1,52 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: main-ingress
+  namespace: app-services 
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    # WebSocket support for collab-service
+    nginx.ingress.kubernetes.io/websocket-services: "collab-service"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: codex.com
+    http:
+      paths:
+      # Kafka-UI path - NO rewrite, pass the full path
+      - path: /kafka-ui(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: kafka-ui
+            port:
+              number: 8080
+      
+      # Grafana path - with specific rewrite for Grafana
+      - path: /grafana-ui(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: grafana-proxy
+            port:
+              number: 80
+      
+      # Collab-service WebSocket path - must be before gateway catch-all
+      - path: /socket.io(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: collab-service
+            port:
+              number: 5001
+      
+      # Gateway - catch all, must be last
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: gateway-service
+            port:
+              number: 4000

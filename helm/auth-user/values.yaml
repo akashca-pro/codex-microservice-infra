@@ -1,0 +1,52 @@
+replicaCount: 1
+
+image:
+  repository: akashcapro/codex-auth-user-service
+  tag: "0.0.4"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  ports:
+    grpc: 50051
+    metrics: 9101
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+env: 
+  - name: REDIS_URL
+    value: "redis://redis:6379"
+  - name: GRPC_AUTH_USER_SERVICE_SERVER_URL
+    value: "0.0.0.0:50051"
+  - name: JWT_ACCESS_TOKEN_EXPIRY
+    value: "1h"
+  - name: JWT_REFRESH_TOKEN_EXPIRY
+    value: "1d"
+  - name: NODEMAILER_EMAIL
+    value: "codex.platform.official@gmail.com"
+  - name: NODEMAILER_SERVICE
+    value: gmail
+  - name: AUTH_USER_SERVICE_METRICS_PORT
+    value: "9101"
+  - name: OTP_EXPIRY_SECONDS
+    value: "120"
+  - name: PROFILE_CACHE_EXPIRY
+    value: "86400"
+  - name: BLOCKED_USER_CACHE_EXPIRY
+    value: "3600"
+  - name: OTEL_SERVICE_NAME
+    value: "auth-user-service"
+  - name: DEFAULT_GRPC_TIMEOUT
+    value: "15000"
+  - name: GRPC_PROBLEM_SERVICE_URL
+    value: "problem-service:50052"
+
+envFrom:
+  - secretRef:
+      name: app-secrets 

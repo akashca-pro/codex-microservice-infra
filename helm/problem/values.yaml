@@ -1,0 +1,36 @@
+replicaCount: 1
+
+image:
+  repository: akashcapro/codex-problem-service
+  tag: "0.0.4"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  ports:
+    grpc: 50052
+    metrics: 9102
+    
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+env:
+  - name: REDIS_URL
+    value: "redis://redis:6379"
+  - name: GRPC_PROBLEM_SERVICE_SERVER_URL
+    value: "0.0.0.0:50052"
+  - name: PROBLEM_SERVICE_METRICS_PORT
+    value: "9102"
+  - name: PROBLEM_DETAILS_CACHE_EXPIRY
+    value: "86400"
+  - name: OTEL_SERVICE_NAME
+    value: "problem-service"
+  # - name: OTEL_EXPORTER_OTLP_ENDPOINT
+  #   value: "otel-collector-opentelemetry-collector.observability.svc.cluster.local:4317"           
+envFrom:
+  - secretRef:
+      name: app-secrets 

@@ -1,0 +1,52 @@
+repositories:
+  - name: grafana
+    url: https://grafana.github.io/helm-charts
+  - name: prometheus-community
+    url: https://prometheus-community.github.io/helm-charts
+  - name: open-telemetry 
+    url: https://open-telemetry.github.io/opentelemetry-helm-charts
+  - name: ingress-nginx
+    url: https://kubernetes.github.io/ingress-nginx
+
+releases:
+  - name: prometheus
+    namespace: observability
+    chart: prometheus-community/prometheus
+    values:
+      - observability-values/prometheus-values.yaml
+      
+  - name: loki
+    namespace: observability
+    chart: grafana/loki
+    values:
+      - observability-values/loki-values.yaml
+
+  - name: promtail
+    namespace: observability
+    chart: grafana/promtail
+    values:
+      - observability-values/promtail-values.yaml
+
+  - name: tempo
+    namespace: observability
+    chart: grafana/tempo
+    values:
+      - observability-values/tempo-values.yaml
+
+  - name: grafana
+    namespace: observability
+    chart: grafana/grafana
+    values:
+      - observability-values/grafana-values.yaml
+
+  - name: otel-collector
+    namespace: observability
+    chart: open-telemetry/opentelemetry-collector
+    values:
+      - observability-values/otel-collector-values.yaml  
+      
+  - name: ingress-nginx
+    namespace: ingress-nginx 
+    chart: ingress-nginx/ingress-nginx
+    values:
+      - ingress-controller-values/nginx.yaml

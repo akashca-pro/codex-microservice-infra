@@ -1,0 +1,44 @@
+# values/loki-values.yaml
+loki:
+  # All configurations must be nested under this 'loki' key
+  deploymentMode: SingleBinary
+
+  auth_enabled: false
+  
+  commonConfig:
+    replication_factor: 1
+  
+  storage:
+    type: 'filesystem'
+  
+  schemaConfig:
+    configs:
+      - from: 2024-01-01
+        store: tsdb
+        object_store: filesystem
+        schema: v13
+        index:
+          prefix: loki_index_
+          period: 24h
+
+  singleBinary:
+    replicas: 1
+    persistence:
+      enabled: true
+      size: 2Gi
+      storageClass: standard # Ensure this StorageClass exists in your cluster
+
+# It's good practice to explicitly disable components not needed for SingleBinary mode
+# Note: These are top-level keys, as they control separate sub-charts.
+backend:
+  replicas: 0
+read:
+  replicas: 0
+write:
+  replicas: 0
+
+monitoring:
+  selfMonitoring:
+    enabled: false
+  lokiCanary:
+    enabled: false

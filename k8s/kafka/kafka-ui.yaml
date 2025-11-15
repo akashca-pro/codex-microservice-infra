@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-ui
+  namespace: app-services
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-ui
+  template:
+    metadata:
+      labels:
+        app: kafka-ui
+    spec:
+      # 'wait-for-kafka' initContainer is REMOVED (no longer needed)
+      containers:
+        - name: kafka-ui
+          image: provectuslabs/kafka-ui:latest
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          env:
+            - name: KAFKA_CLUSTERS_0_NAME
+              value: "local"
+            # --- THIS IS THE FIX ---
+            - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
+              value: "kafka:9092"
+            - name: SERVER_SERVLET_CONTEXT_PATH
+              value: "/kafka-ui"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-ui
+  namespace: app-services
+spec:
+  selector:
+    app: kafka-ui
+  ports:
+  - name: kafka-ui
+    protocol: TCP
+    port: 8080
+    targetPort: 8080

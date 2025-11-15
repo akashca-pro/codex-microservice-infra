@@ -1,0 +1,50 @@
+replicaCount: 1
+
+image:
+  repository: akashcapro/codex-collab-service
+  tag: "0.0.4"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  ports:
+    grpc: 50054
+    http: 5001
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+env:
+  - name: JWT_INVITE_TOKEN_EXPIRY
+    value: "24h"
+  - name: SOCKET_MAP_CACHE_EXPIRY
+    value: "3600"
+  - name: GRPC_COLLAB_SERVICE_URL
+    value: "0.0.0.0:50054"
+  - name: TOKEN_NAME
+    value: "accessToken"
+  - name: REDIS_URL
+    value: "redis://redis:6379" 
+  - name: CLIENT_URL
+    value: "http://codex.com:5173"
+  - name: KAFKA_COLLAB_SERVICE_CLIENT_ID
+    value: "collab-service"
+  - name: KAFKA_BROKERS
+    value: 'kafka:9092'
+  - name: KAFKA_MAX_RETRIES
+    value: "3"
+  - name: KAFKA_RETRY_QUEUE_CAP
+    value: "100000"
+  - name: PODNAME
+    value: "local"
+  - name: SOCKET_PORT
+    value: "5001"
+  - name: SNAPSHOT_TTL_SECONDS
+    value: "172800"
+envFrom:
+  - secretRef:
+      name: app-secrets

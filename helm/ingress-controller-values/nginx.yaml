@@ -1,0 +1,6 @@
+controller:
+  service:
+    type: NodePort
+    nodePorts:
+      http: 30080   # host port for HTTP
+      https: 30443  # host port for HTTPS

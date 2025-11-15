@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "svc.fullname" . }}
+  namespace: app-services
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "svc.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "svc.fullname" . }}
+    spec:
+      initContainers:
+        - name: wait-for-redis
+          image: busybox:1.36.1
+          command: ["sh", "-c", "until nc -z -w 1 redis 6379; do sleep 2; done;"]
+      
+      containers:
+        - name: {{ include "svc.fullname" . }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+          env:
+            {{- range .Values.containers.app.env }}
+            - name: {{ .name }}
+              value: "{{ .value }}"
+            {{- end }}
+
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+
+        - name: docker-daemon
+          image: docker:dind
+          securityContext:
+            privileged: true
+
+          env:
+            {{- range .Values.containers.dind.env }}
+            - name: {{ .name }}
+              value: "{{ .value }}"
+            {{- end }}
+
+          args: ["--host=tcp://0.0.0.0:2375", "--storage-driver=overlay2"]
+
+          {{- if .Values.containers.dind.resources }}
+          resources:
+            {{- toYaml .Values.containers.dind.resources | nindent 12 }}
+          {{- end }}
+
+          volumeMounts:
+            - name: dind-storage
+              mountPath: /var/lib/docker
+
+      volumes:
+        - name: dind-storage
+          emptyDir: {}

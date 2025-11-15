@@ -1,0 +1,9 @@
+# Option 1: Simple ExternalName (no ports needed)
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana-proxy
+  namespace: app-services
+spec:
+  type: ExternalName
+  externalName: grafana.observability.svc.cluster.local

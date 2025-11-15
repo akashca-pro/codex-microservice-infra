@@ -1,0 +1,5 @@
+.env
+services
+k8s/01-secrets.yaml
+*.pem
+helm/common/values.yaml

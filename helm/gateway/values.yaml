@@ -1,0 +1,56 @@
+replicaCount: 1
+
+image:
+  repository: akashcapro/codex-gateway-service
+  tag: "0.0.4"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  ports:
+    http: 4000
+    metrics: 9100
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+env:
+  - name: CLIENT_URL
+    value: "http://codex.com:5173"
+  - name: JWT_ACCESS_TOKEN_EXPIRY
+    value: "1h"
+  - name: JWT_REFRESH_TOKEN_EXPIRY
+    value: "1d"
+  - name: GATEWAY_SERVICE_PORT
+    value: "4000"
+  - name: REDIS_URL
+    value: "redis://redis:6379"
+  - name: GRPC_AUTH_USER_SERVICE_URL
+    value: "auth-user-service:50051"
+  - name: GRPC_PROBLEM_SERVICE_URL
+    value: "problem-service:50052"
+  - name: GRPC_CODE_MANAGE_SERVICE_URL
+    value: "code-manage-service:50053"
+  - name: GRPC_COLLAB_SERVICE_URL
+    value: "collab-service:50054"
+  - name: DEFAULT_GRPC_TIMEOUT
+    value: "15000"
+  - name: GATEWAY_SERVICE_METRICS_PORT
+    value: "9100"
+  - name: METRICS_URL
+    value: "http://prometheus.monitoring:9090/api/v1/query"
+  - name: OTEL_SERVICE_NAME
+    value: "gateway-service"
+  # - name: OTEL_EXPORTER_OTLP_ENDPOINT
+  #   value: "otel-collector-opentelemetry-collector.observability.svc.cluster.local:4317"
+  - name: NODE_ENV
+    value: "development" 
+  - name: domain
+    value: codex.com
+envFrom:
+  - secretRef:
+      name: app-secrets

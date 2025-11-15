@@ -1,0 +1,9 @@
+tempo:
+  replicas: 2
+  storage:
+    trace:
+      backend: local
+  server:
+    http_listen_port: 3200
+service:
+  type: ClusterIP

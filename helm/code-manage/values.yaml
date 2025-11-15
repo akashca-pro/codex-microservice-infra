@@ -1,0 +1,53 @@
+replicaCount: 1
+
+image:
+  repository: akashcapro/codex-code-manage-service
+  tag: "0.0.4"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  ports:
+    grpc: 50053
+    metrics: 9103
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+env:
+  - name: CODE_MANAGE_SERVICE_METRICS_PORT
+    value: "9103"
+  - name: REDIS_URL
+    value: "redis://redis:6379"
+  - name: SUBMISSION_DETAILS_CACHE_EXPIRY
+    value: "600"
+  - name: RUN_CODE_DETAILS_CACHE_EXPIRY
+    value: "600"
+  - name: PROBLEM_DETAILS_CACHE_EXPIRY
+    value: "86400"
+  - name: GRPC_CODE_MANAGE_SERVICE_SERVER_URL
+    value: "0.0.0.0:50053"
+  - name: GRPC_PROBLEM_SERVICE_URL
+    value: "problem-service:50052"
+  - name: DEFAULT_GRPC_TIMEOUT
+    value: "15000"
+  - name: KAFKA_IDEMPOTENCY_KEY_EXPIRY
+    value: "600"
+  - name: KAFKA_CODE_MANAGE_SERVICE_CLIENT_ID
+    value: 'code-manage-service'
+  - name: KAFKA_BROKERS
+    value: 'kafka:9092'
+  - name: KAFKA_CODE_MANAGE_SERVICE_GROUP_ID
+    value: 'code-manage-group'
+  - name: KAFKA_MAX_RETRIES
+    value: "3"
+  - name: KAFKA_RETRY_QUEUE_CAP
+    value: "10000"
+  - name: OTEL_SERVICE_NAME
+    value: "code-manage-service"
+  # - name: OTEL_EXPORTER_OTLP_ENDPOINT
+  #   value: "otel-collector-opentelemetry-collector.observability.svc.cluster.local:4317" 

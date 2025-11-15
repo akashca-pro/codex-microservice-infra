@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "svc.fullname" . }}
+  namespace: app-services
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "svc.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "svc.fullname" . }}
+    spec:
+      initContainers:
+        - name: wait-for-redis
+          image: busybox:1.36.1
+          command:
+            - sh
+            - -c
+            - |
+              echo "Waiting for Redis..."
+              until nc -z -w 1 redis 6379; do
+                sleep 2
+              done
+
+      containers:
+        - name: {{ include "svc.fullname" . }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+          ports:
+            {{- range .Values.service.ports }}
+            - containerPort: {{ . }}
+            {{- end }}
+
+          env:
+            {{- range .Values.env }}
+            - name: {{ .name }}
+              value: "{{ .value }}"
+            {{- end }}
+
+          {{- if .Values.envFrom }}
+          envFrom:
+            {{- range .Values.envFrom }}
+            - {{ toYaml . | nindent 12 }}
+            {{- end }}
+          {{- end }}
+
+          resources:
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
