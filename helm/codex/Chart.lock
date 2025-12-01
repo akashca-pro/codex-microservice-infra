@@ -13,7 +13,7 @@ dependencies:
   version: 1.0.1
 - name: collab-service
   repository: file://../collab
-  version: 1.0.1
+  version: 1.0.2
 - name: problem-service
   repository: file://../problem
   version: 1.0.1
@@ -22,6 +22,6 @@ dependencies:
   version: 1.0.1
 - name: code-execution-service
   repository: file://../code-execution
-  version: 1.0.1
-digest: sha256:4d653159f8dc0aef13531e6320fde4664e20791c721260ddaf9c3ece46331118
-generated: "2025-12-02T04:13:04.261699+05:30"
+  version: 1.0.2
+digest: sha256:4303b9ca475801332a995391fd5bde2566e0aa56f874013c0321f00656596f9c
+generated: "2025-12-02T04:30:21.508376+05:30"

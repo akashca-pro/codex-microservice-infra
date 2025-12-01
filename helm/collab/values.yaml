@@ -29,8 +29,10 @@ env:
     value: "accessToken"
   - name: REDIS_URL
     value: "redis://redis:6379" 
-  - name: CLIENT_URL
+  - name: CLIENT_URL_1
     value: "https://codexakash.space"
+  - name: CLIENT_URL_2
+    value: "https://www.codexakash.space"
   - name: KAFKA_COLLAB_SERVICE_CLIENT_ID
     value: "collab-service"
   - name: KAFKA_BROKERS

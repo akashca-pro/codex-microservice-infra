@@ -33,7 +33,7 @@ containers:
       - name: KAFKA_RETRY_QUEUE_CAP
         value: "100000"
       - name: WORKER_IMAGE_NAME
-        value: "akashcapro/codex-sandbox"
+        value: "akashcapro/codex-sandbox-k8s"
       - name: EXECUTION_TIMEOUT
         value: "10000"
       - name: MAX_OUTPUT_LENGTH
