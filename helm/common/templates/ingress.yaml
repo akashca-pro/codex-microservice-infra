@@ -16,7 +16,7 @@ spec:
   tls:
   - hosts:
       - api.codexakash.space
-    secretName: codex-tls
+    secretName: codex-api-tls
 
   rules:
   - host: api.codexakash.space
