@@ -1,24 +1,24 @@
 # app-services image tags
 auth-user-service:
   image:
-    tag: "0.0.6" 
+    tag: "latest" 
 
 gateway-service:
   image:
-    tag: "0.0.6" 
+    tag: "latest" 
 
 problem-service:
   image:
-    tag: "0.0.7" 
+    tag: "latest" 
 
 code-manage-service:
   image:
-    tag: "0.0.6" 
+    tag: "latest" 
 
 code-execution-service:
   image:
-    tag: "0.0.6" 
+    tag: "latest" 
 
 collab-service:
   image:
-    tag: "0.0.6"
+    tag: "latest"
