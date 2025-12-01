@@ -3,7 +3,7 @@ replicaCount: 3
 image:
   repository: akashcapro/codex-collab-service
   tag: "0.0.4"
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 service:
   type: ClusterIP

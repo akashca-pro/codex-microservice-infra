@@ -1,9 +1,9 @@
-replicaCount: 1
+replicaCount: 2
 
 image:
   repository: akashcapro/codex-gateway-service
   tag: "0.0.4"
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 service:
   type: ClusterIP
@@ -52,7 +52,7 @@ env:
   - name: NODE_ENV
     value: "development" 
   - name: domain
-    value: codex.com
+    value: codexakash.space
 envFrom:
   - secretRef:
       name: app-secrets
