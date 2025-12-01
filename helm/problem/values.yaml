@@ -14,21 +14,25 @@ service:
 resources:
   requests:
     cpu: 100m
-    memory: 128Mi
+    memory: 256Mi
   limits:
-    cpu: 500m
+    cpu: 300m
     memory: 512Mi
 env:
   - name: REDIS_URL
     value: "redis://redis:6379"
   - name: GRPC_PROBLEM_SERVICE_SERVER_URL
     value: "0.0.0.0:50052"
+  - name: GRPC_AUTH_USER_SERVICE_URL
+    value: "auth-user-service:50051"
   - name: PROBLEM_SERVICE_METRICS_PORT
     value: "9102"
   - name: PROBLEM_DETAILS_CACHE_EXPIRY
     value: "86400"
   - name: OTEL_SERVICE_NAME
     value: "problem-service"
+  - name: DEFAULT_GRPC_TIMEOUT
+    value: "15000"
   # - name: OTEL_EXPORTER_OTLP_ENDPOINT
   #   value: "otel-collector-opentelemetry-collector.observability.svc.cluster.local:4317"           
 envFrom:

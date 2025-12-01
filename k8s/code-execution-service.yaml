@@ -39,7 +39,7 @@ spec:
       containers:
       # container 1 code-execution-service app (Docker client)
         - name: code-execution-service
-          image: akashcapro/codex-code-execution-service-k8s:0.0.4
+          image: akashcapro/codex-code-execution-service-k8s:0.0.5
           imagePullPolicy: IfNotPresent
           resources:
             requests:

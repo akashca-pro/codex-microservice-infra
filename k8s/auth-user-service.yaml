@@ -38,7 +38,7 @@ spec:
               memory: 64Mi
       containers:
         - name: auth-user-service
-          image: akashcapro/codex-auth-user-service:0.0.4
+          image: akashcapro/codex-auth-user-service:0.0.5
           imagePullPolicy: Always
           ports:
           - containerPort: 50051 

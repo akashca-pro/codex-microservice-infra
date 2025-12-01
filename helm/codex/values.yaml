@@ -1,0 +1,24 @@
+# app-services image tags
+auth-user-service:
+  image:
+    tag: "0.0.6" 
+
+gateway-service:
+  image:
+    tag: "0.0.6" 
+
+problem-service:
+  image:
+    tag: "0.0.7" 
+
+code-manage-service:
+  image:
+    tag: "0.0.6" 
+
+code-execution-service:
+  image:
+    tag: "0.0.6" 
+
+collab-service:
+  image:
+    tag: "0.0.6"

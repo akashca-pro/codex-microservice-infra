@@ -39,7 +39,7 @@ spec:
               memory: 64Mi
       containers:
         - name: code-manage-service
-          image: akashcapro/codex-code-manage-service:0.0.4
+          image: akashcapro/codex-code-manage-service:0.0.5
           imagePullPolicy: Always
           ports:
           -  containerPort: 50053

@@ -38,7 +38,7 @@ spec:
               memory: 64Mi
       containers:
       - name: problem-service
-        image: akashcapro/codex-problem-service:0.0.4
+        image: akashcapro/codex-problem-service:0.0.6
         imagePullPolicy: Always
         ports:
         - containerPort: 50052

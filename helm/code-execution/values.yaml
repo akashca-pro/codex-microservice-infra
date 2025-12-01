@@ -48,6 +48,8 @@ containers:
         value: "/var/run/docker.sock"
       - name: OTEL_SERVICE_NAME
         value: "code-execution-service"
+    # - name: OTEL_EXPORTER_OTLP_ENDPOINT
+    #   value: "otel-collector-opentelemetry-collector.observability.svc.cluster.local:4317" 
 
   dind:
     env:
