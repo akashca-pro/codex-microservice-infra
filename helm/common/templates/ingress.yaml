@@ -3,18 +3,25 @@ kind: Ingress
 metadata:
   name: main-ingress
   annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+
     nginx.ingress.kubernetes.io/use-regex: "true"
-    # WebSocket support for collab-service
     nginx.ingress.kubernetes.io/websocket-services: "collab-service"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
 spec:
   ingressClassName: nginx
+
+  tls:
+  - hosts:
+      - codexakash.space
+    secretName: codex-tls
+
   rules:
-  - host: codex.com
+  - host: codexakash.space
     http:
       paths:
-      # Kafka-UI path - NO rewrite, pass the full path
       - path: /kafka-ui(/|$)(.*)
         pathType: ImplementationSpecific
         backend:
@@ -22,8 +29,7 @@ spec:
             name: kafka-ui
             port:
               number: 8080
-      
-      # Grafana path - with specific rewrite for Grafana
+
       - path: /grafana-ui(/|$)(.*)
         pathType: ImplementationSpecific
         backend:
@@ -31,8 +37,7 @@ spec:
             name: grafana-proxy
             port:
               number: 80
-      
-      # Collab-service WebSocket path - must be before gateway catch-all
+
       - path: /socket.io(/|$)(.*)
         pathType: ImplementationSpecific
         backend:
@@ -40,8 +45,7 @@ spec:
             name: collab-service
             port:
               number: 5001
-      
-      # Gateway - catch all, must be last
+
       - path: /
         pathType: Prefix
         backend:
