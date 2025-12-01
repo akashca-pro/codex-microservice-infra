@@ -15,11 +15,11 @@ spec:
 
   tls:
   - hosts:
-      - codexakash.space
+      - api.codexakash.space
     secretName: codex-tls
 
   rules:
-  - host: codexakash.space
+  - host: api.codexakash.space
     http:
       paths:
       - path: /kafka-ui(/|$)(.*)
