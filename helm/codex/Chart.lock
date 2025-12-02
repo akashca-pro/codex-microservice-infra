@@ -1,27 +1,27 @@
 dependencies:
 - name: common-lib
   repository: file://../common-lib
-  version: 1.0.0
+  version: 1.0.1
 - name: common
   repository: file://../common
   version: 1.0.6
 - name: auth-user-service
   repository: file://../auth-user
-  version: 1.0.1
+  version: 1.0.2
 - name: gateway-service
   repository: file://../gateway
-  version: 1.0.1
+  version: 1.0.2
 - name: collab-service
   repository: file://../collab
-  version: 1.0.2
+  version: 1.0.3
 - name: problem-service
   repository: file://../problem
-  version: 1.0.1
+  version: 1.0.2
 - name: code-manage-service
   repository: file://../code-manage
-  version: 1.0.1
+  version: 1.0.2
 - name: code-execution-service
   repository: file://../code-execution
-  version: 1.0.3
-digest: sha256:5b011b2031aa5c742aa4f0dbce89a8ee053ec0fa6e63e7f873072bab2d1bff4a
-generated: "2025-12-02T05:14:58.307898+05:30"
+  version: 1.0.4
+digest: sha256:eda0dfda56f689bbbf18b4871c980395d2a05fda364674f0d9de0f4203aec6ef
+generated: "2025-12-02T21:32:38.130601+05:30"

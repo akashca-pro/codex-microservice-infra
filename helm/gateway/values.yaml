@@ -1,4 +1,4 @@
-replicaCount: 2
+replicaCount: 3
 
 image:
   repository: akashcapro/codex-gateway-service
@@ -13,11 +13,20 @@ service:
 
 resources:
   requests:
-    cpu: 100m
-    memory: 256Mi
+    cpu: 200m
+    memory: 300Mi
+
   limits:
-    cpu: 300m
-    memory: 512Mi
+    cpu: 700m
+    memory: 600Mi
+
+  autoscaling:
+    minReplicas: 2
+    maxReplicas: 10
+    cpu: 55
+    memory: 70
+
+
 env:
   - name: CLIENT_URL_1
     value: "https://codexakash.space"

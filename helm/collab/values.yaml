@@ -1,4 +1,4 @@
-replicaCount: 3
+replicaCount: 4
 
 image:
   repository: akashcapro/codex-collab-service
@@ -13,11 +13,19 @@ service:
 
 resources:
   requests:
-    cpu: 150m
-    memory: 256Mi
+    cpu: 200m
+    memory: 400Mi
+
   limits:
-    cpu: 400m
-    memory: 512Mi
+    cpu: 500m
+    memory: 900Mi
+
+  autoscaling:
+    minReplicas: 2
+    maxReplicas: 10
+    cpu: 60
+    memory: 70
+
 env:
   - name: JWT_INVITE_TOKEN_EXPIRY
     value: "24h"

@@ -15,9 +15,16 @@ resources:
   requests:
     cpu: 100m
     memory: 256Mi
+
   limits:
-    cpu: 300m
+    cpu: 400m
     memory: 512Mi
+
+  autoscaling:
+    minReplicas: 2
+    maxReplicas: 8
+    cpu: 60
+    memory: 75
 
 env: 
   - name: REDIS_URL

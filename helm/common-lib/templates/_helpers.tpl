@@ -16,7 +16,9 @@ metadata:
   name: {{ include "svc.fullname" . }}
   namespace: app-services
 spec:
+  {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
+  {{- end }}
   selector:
     matchLabels:
       app: {{ include "svc.fullname" . }}
@@ -84,4 +86,42 @@ spec:
       port: {{ $port }}
       targetPort: {{ $port }}
     {{- end }}
+{{- end }}
+
+
+{{/*
+Common HPA template
+*/}}
+{{- define "common-lib.hpa" }}
+{{- if .Values.autoscaling.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "svc.fullname" . }}
+  namespace: app-services
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "svc.fullname" . }}
+
+  minReplicas: {{ .Values.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
+
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.autoscaling.cpu }}
+
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.autoscaling.memory }}
+
+{{- end }}
 {{- end }}
