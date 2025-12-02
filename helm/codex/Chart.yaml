@@ -12,20 +12,20 @@ dependencies:
     version: 1.0.6
     repository: "file://../common"
   - name: auth-user-service
-    version: 1.0.2
+    version: 1.0.3
     repository: "file://../auth-user"
   - name: gateway-service
-    version: 1.0.2
+    version: 1.0.3
     repository: "file://../gateway"
   - name: collab-service
-    version: 1.0.3
+    version: 1.0.4
     repository: "file://../collab"
   - name: problem-service
-    version: 1.0.2
+    version: 1.0.3
     repository: "file://../problem"
   - name: code-manage-service
-    version: 1.0.2
+    version: 1.0.3
     repository: "file://../code-manage"
   - name: code-execution-service
-    version: 1.0.4
+    version: 1.0.5
     repository: "file://../code-execution"

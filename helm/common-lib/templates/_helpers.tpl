@@ -93,7 +93,7 @@ spec:
 Common HPA template
 */}}
 {{- define "common-lib.hpa" }}
-{{- if .Values.autoscaling.enabled }}
+{{- if and .Values.autoscaling .Values.autoscaling.enabled }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:

@@ -20,11 +20,11 @@ resources:
     cpu: 800m
     memory: 700Mi
 
-  autoscaling:
-    minReplicas: 2
-    maxReplicas: 6
-    cpu: 60
-    memory: 75
+autoscaling:
+  minReplicas: 2
+  maxReplicas: 6
+  cpu: 60
+  memory: 75
 
 env:
   - name: CODE_MANAGE_SERVICE_METRICS_PORT

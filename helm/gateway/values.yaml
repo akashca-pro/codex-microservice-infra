@@ -20,11 +20,11 @@ resources:
     cpu: 700m
     memory: 600Mi
 
-  autoscaling:
-    minReplicas: 2
-    maxReplicas: 10
-    cpu: 55
-    memory: 70
+autoscaling:
+  minReplicas: 2
+  maxReplicas: 10
+  cpu: 55
+  memory: 70
 
 
 env:

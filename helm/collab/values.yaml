@@ -20,11 +20,11 @@ resources:
     cpu: 500m
     memory: 900Mi
 
-  autoscaling:
-    minReplicas: 2
-    maxReplicas: 10
-    cpu: 60
-    memory: 70
+autoscaling:
+  minReplicas: 2
+  maxReplicas: 10
+  cpu: 60
+  memory: 70
 
 env:
   - name: JWT_INVITE_TOKEN_EXPIRY

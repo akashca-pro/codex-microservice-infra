@@ -14,11 +14,11 @@ resources:
     cpu: 1500m
     memory: 2Gi
 
-  autoscaling:
-    minReplicas: 1
-    maxReplicas: 6
-    cpu: 50
-    memory: 65
+autoscaling:
+  minReplicas: 1
+  maxReplicas: 6
+  cpu: 50
+  memory: 65
 
 containers:
   app:

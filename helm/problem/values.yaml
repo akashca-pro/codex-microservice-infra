@@ -20,11 +20,11 @@ resources:
     cpu: 700m
     memory: 700Mi
 
-  autoscaling:
-    minReplicas: 2
-    maxReplicas: 8
-    cpu: 55
-    memory: 75
+autoscaling:
+  minReplicas: 2
+  maxReplicas: 8
+  cpu: 55
+  memory: 75
 
 env:
   - name: REDIS_URL
