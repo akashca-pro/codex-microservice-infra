@@ -22,6 +22,6 @@ dependencies:
   version: 1.0.6
 - name: code-execution-service
   repository: file://../code-execution
-  version: 1.0.9
-digest: sha256:aec4c2e383eeea6d9b96dbdaaffca786c32a4809d3649b9d8d2ddd2415cf7e55
-generated: "2025-12-04T10:56:33.409373+05:30"
+  version: 1.0.10
+digest: sha256:64379643a28c3c116ce85e55f64107b99304fd82dcf6cd4f4db8f0828539dae9
+generated: "2025-12-04T12:36:09.874515+05:30"
