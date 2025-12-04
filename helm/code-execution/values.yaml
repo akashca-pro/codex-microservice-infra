@@ -13,6 +13,13 @@ resources:
     cpu: 500m
     memory: 512Mi
 
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 6
+  cpu: 50
+  memory: 65
+
 containers:
   app:
     env:

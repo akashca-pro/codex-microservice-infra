@@ -19,6 +19,13 @@ resources:
     cpu: 150m
     memory: 256Mi
 
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 10
+  cpu: 60
+  memory: 70
+
 env:
   - name: JWT_INVITE_TOKEN_EXPIRY
     value: "24h"

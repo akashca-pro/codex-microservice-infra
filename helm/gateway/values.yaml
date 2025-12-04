@@ -19,6 +19,12 @@ resources:
     cpu: 150m
     memory: 256Mi
 
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 10
+  cpu: 55
+  memory: 70
 
 env:
   - name: CLIENT_URL_1

@@ -19,6 +19,13 @@ resources:
     cpu: 150m
     memory: 256Mi
 
+autoscaling:
+  enabled : false
+  minReplicas: 2
+  maxReplicas: 8
+  cpu: 60
+  memory: 75
+
 env: 
   - name: REDIS_URL
     value: "redis://redis:6379"
