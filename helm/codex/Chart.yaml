@@ -6,26 +6,26 @@ version: 1.0.0
 appVersion: "1.0.0"
 dependencies:
   - name: common-lib
-    version: 1.0.1
+    version: 1.0.2
     repository: "file://../common-lib"
   - name: common
     version: 1.0.6
     repository: "file://../common"
   - name: auth-user-service
-    version: 1.0.4
+    version: 1.0.5
     repository: "file://../auth-user"
   - name: gateway-service
-    version: 1.0.4
+    version: 1.0.5
     repository: "file://../gateway"
   - name: collab-service
-    version: 1.0.5
+    version: 1.0.6
     repository: "file://../collab"
   - name: problem-service
-    version: 1.0.4
+    version: 1.0.5
     repository: "file://../problem"
   - name: code-manage-service
-    version: 1.0.4
+    version: 1.0.5
     repository: "file://../code-manage"
   - name: code-execution-service
-    version: 1.0.6
+    version: 1.0.7
     repository: "file://../code-execution"
