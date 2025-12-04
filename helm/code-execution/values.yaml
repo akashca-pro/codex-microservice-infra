@@ -1,4 +1,4 @@
-replicaCount: 3
+replicaCount: 1
 
 image:
   repository: akashcapro/codex-code-execution-service-k8s
@@ -7,18 +7,11 @@ image:
 
 resources:
   requests:
-    cpu: 400m
-    memory: 1Gi
-
+    cpu: 100m
+    memory: 128Mi
   limits:
-    cpu: 1500m
-    memory: 2Gi
-
-autoscaling:
-  minReplicas: 1
-  maxReplicas: 6
-  cpu: 50
-  memory: 65
+    cpu: 500m
+    memory: 512Mi
 
 containers:
   app:

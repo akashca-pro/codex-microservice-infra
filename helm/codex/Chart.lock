@@ -7,21 +7,21 @@ dependencies:
   version: 1.0.6
 - name: auth-user-service
   repository: file://../auth-user
-  version: 1.0.3
+  version: 1.0.4
 - name: gateway-service
   repository: file://../gateway
-  version: 1.0.3
+  version: 1.0.4
 - name: collab-service
   repository: file://../collab
-  version: 1.0.4
+  version: 1.0.5
 - name: problem-service
   repository: file://../problem
-  version: 1.0.3
+  version: 1.0.4
 - name: code-manage-service
   repository: file://../code-manage
-  version: 1.0.3
+  version: 1.0.4
 - name: code-execution-service
   repository: file://../code-execution
-  version: 1.0.5
-digest: sha256:c2c1379859d846c79bda336761c6f7b9bec274b1caff401eb7a7b78b2261af26
-generated: "2025-12-02T21:43:40.037471+05:30"
+  version: 1.0.6
+digest: sha256:a21e34c6542f2cb102118d97c435b6d0e7b818271add1875d4d2390ad00c323e
+generated: "2025-12-04T10:09:52.579647+05:30"
