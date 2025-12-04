@@ -59,6 +59,9 @@ containers:
     #   value: "otel-collector-opentelemetry-collector.observability.svc.cluster.local:4317" 
 
   dind:
+    env:
+      - name: DOCKER_TLS_CERTDIR
+        value: ""
     resources:
       requests:
         cpu: "300m"

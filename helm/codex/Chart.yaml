@@ -27,5 +27,5 @@ dependencies:
     version: 1.0.6
     repository: "file://../code-manage"
   - name: code-execution-service
-    version: 1.0.10
+    version: 1.0.12
     repository: "file://../code-execution"
