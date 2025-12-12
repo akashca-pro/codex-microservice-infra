@@ -15,7 +15,7 @@ services:
 
   # Auth User Service
   auth-user-service:
-    image: akashcapro/codex-auth-user-service:0.0.1
+    image: akashcapro/codex-auth-user-service:latest
     container_name: auth-user-service
     environment:
       AUTH_USER_SERVICE_DATABASE_URL: ${AUTH_USER_SERVICE_DATABASE_URL}
@@ -32,19 +32,21 @@ services:
       NODEMAILER_SERVICE: ${NODEMAILER_SERVICE}
       OTP_EXPIRY_SECONDS: ${OTP_EXPIRY_SECONDS}
       PROFILE_CACHE_EXPIRY: ${PROFILE_CACHE_EXPIRY}
-      BLOCKED_USER_CACHE_EXPIRY : ${BLOCKED_USER_CACHE_EXPIRY}
+      BLOCKED_USER_CACHE_EXPIRY: ${BLOCKED_USER_CACHE_EXPIRY}
+      OTEL_SERVICE_NAME: "auth-user-service"
+      DEFAULT_GRPC_TIMEOUT: ${DEFAULT_GRPC_TIMEOUT}
+      GRPC_PROBLEM_SERVICE_URL: ${GRPC_PROBLEM_SERVICE_URL}
     ports:
       - "9101:9101"
       - "50051:50051"
     networks:
       - app-network
-      - monitoring
     depends_on:
       - redis
 
   # Gateway service
   gateway-service:
-    image: akashcapro/codex-gateway-service:0.0.1
+    image: akashcapro/codex-gateway-service:latest
     container_name: gateway-service
     environment:
       SERVICE_NAME: GATEWAY_SERVICE
@@ -54,10 +56,12 @@ services:
       JWT_REFRESH_TOKEN_EXPIRY: ${JWT_REFRESH_TOKEN_EXPIRY}
       GATEWAY_SERVICE_PORT: ${GATEWAY_SERVICE_PORT}
       REDIS_URL: ${REDIS_URL}
-      CLIENT_URL: ${CLIENT_URL}
+      CLIENT_URL_1: ${CLIENT_URL_1}
+      CLIENT_URL_2: ${CLIENT_URL_2}
       GRPC_AUTH_USER_SERVICE_URL: ${GRPC_AUTH_USER_SERVICE_URL}
       GRPC_PROBLEM_SERVICE_URL: ${GRPC_PROBLEM_SERVICE_URL}
       GRPC_CODE_MANAGE_SERVICE_URL: ${GRPC_CODE_MANAGE_SERVICE_URL}
+      GRPC_COLLAB_SERVICE_URL: ${GRPC_COLLAB_SERVICE_URL}
       DEFAULT_GRPC_TIMEOUT: ${DEFAULT_GRPC_TIMEOUT}
       GATEWAY_SERVICE_METRICS_PORT: ${GATEWAY_SERVICE_METRICS_PORT}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
@@ -65,12 +69,13 @@ services:
       CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
       CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
       METRICS_URL: ${METRICS_URL}
+      OTEL_SERVICE_NAME: "gateway-service"
+      NODE_ENV: ${development}
     ports:
       - "4000:4000"
       - "9100:9100"
     networks:
       - app-network
-      - monitoring
     depends_on:
       - redis
       - auth-user-service
@@ -78,7 +83,7 @@ services:
 
   #problem-service
   problem-service:
-    image: akashcapro/codex-problem-service:0.0.1
+    image: akashcapro/codex-problem-service:latest
     container_name: problem-service
     environment:
       PROBLEM_SERVICE_DATABASE_URL: ${PROBLEM_SERVICE_DATABASE_URL}
@@ -86,19 +91,58 @@ services:
       REDIS_URL: ${REDIS_URL}
       PROBLEM_DETAILS_CACHE_EXPIRY: ${PROBLEM_DETAILS_CACHE_EXPIRY}
       GRPC_PROBLEM_SERVICE_SERVER_URL: ${GRPC_PROBLEM_SERVICE_SERVER_URL}
+      GRPC_AUTH_USER_SERVICE_URL: ${GRPC_AUTH_USER_SERVICE_URL}
+      OTEL_SERVICE_NAME: "problem-service"
+      DEFAULT_GRPC_TIMEOUT: ${DEFAULT_GRPC_TIMEOUT}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+
     ports:
       - "9102:9102"
       - "50052:50052"
     networks:
       - app-network
-      - monitoring
     depends_on:
       redis:
         condition: service_healthy
 
+
+  collab-service:
+    image: akashcapro/codex-collab-service:latest
+    container_name: codex-collab-service
+    restart: always
+
+    ports:
+      - "50054:50054"  
+      - "5001:5001"     
+
+    environment:
+      JWT_INVITE_TOKEN_EXPIRY: ${JWT_INVITE_TOKEN_EXPIRY}
+      COLLAB_SERVICE_DATABASE_URL: ${COLLAB_SERVICE_DATABASE_URL}
+      JWT_INVITE_TOKEN_SECRET: ${JWT_INVITE_TOKEN_SECRET}
+      SOCKET_MAP_CACHE_EXPIRY: "3600"
+      GRPC_COLLAB_SERVICE_URL: "0.0.0.0:50054"
+      TOKEN_NAME: ${TOKEN_NAME}
+      REDIS_URL: ${REDIS_URL}
+      CLIENT_URL_1: ${CLIENT_URL_1}
+      CLIENT_URL_2: ${CLIENT_URL_2}
+      KAFKA_COLLAB_SERVICE_CLIENT_ID: ${KAFKA_COLLAB_SERVICE_CLIENT_ID}
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
+      KAFKA_MAX_RETRIES: ${KAFKA_MAX_RETRIES}
+      KAFKA_RETRY_QUEUE_CAP: ${KAFKA_RETRY_QUEUE_CAP}
+      PODNAME: ${PODNAME}
+      SOCKET_PORT: ${SOCKET_PORT}
+      SNAPSHOT_TTL_SECONDS: ${SNAPSHOT_TTL_SECONDS}  
+
+    networks:
+      - app-network
+    depends_on:
+      redis:
+        condition: service_healthy
+
+
   #code-manage-service
   code-manage-service:
-    image: akashcapro/codex-code-manage-service:0.0.1
+    image: akashcapro/codex-code-manage-service:latest
     container_name: code-manage-service
     environment:
       CODE_MANAGE_SERVICE_METRICS_PORT: ${CODE_MANAGE_SERVICE_METRICS_PORT}
@@ -115,12 +159,12 @@ services:
       KAFKA_CODE_MANAGE_SERVICE_GROUP_ID: ${KAFKA_CODE_MANAGE_SERVICE_GROUP_ID}
       KAFKA_MAX_RETRIES: ${KAFKA_MAX_RETRIES}
       KAFKA_RETRY_QUEUE_CAP: ${KAFKA_RETRY_QUEUE_CAP}
+      OTEL_SERVICE_NAME: "code-manage-service"
     ports:
       - "9103:9103"
       - "50053:50053"
     networks:
       - app-network
-      - monitoring
     depends_on:
       kafka:
         condition: service_healthy
@@ -129,7 +173,7 @@ services:
 
   #code-execution-service
   code-execution-service:
-    image: akashcapro/codex-code-execution-service-compose:0.0.1 
+    image: akashcapro/codex-code-execution-service-compose:latest
     container_name: code-execution-service
     environment:
       CODE_EXECUTION_SERVICE_METRICS_PORT: ${CODE_EXECUTION_SERVICE_METRICS_PORT}
@@ -145,79 +189,88 @@ services:
       MAX_OUTPUT_LENGTH: ${MAX_OUTPUT_LENGTH}
       CONTAINER_POOL_SIZE: ${CONTAINER_POOL_SIZE}
       DOCKER_LOCAL: ${DOCKER_LOCAL}
+      OTEL_SERVICE_NAME: "code-execution-service"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - "9104:9104"
     networks:
       - app-network
-      - monitoring
     depends_on:
       kafka:
         condition: service_healthy
       redis:
         condition: service_healthy
-
-  # Prometheus
-  prometheus:
-    image: prom/prometheus:latest
-    container_name: prometheus
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      - prometheus_data:/prometheus
-    ports:
-      - "9090:9090"
-    networks:
-      - monitoring
-
-  # Grafana
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
-    ports:
-      - "9000:3000"
-    depends_on:
-      - prometheus
-    networks:
-      - monitoring
-    volumes:
-      - grafana_data:/var/lib/grafana
   
   #kafka
   kafka:
-    image: bitnami/kafka:3.7.1
-    container_name: kafka
-    ports:
-      - "9092:9092"
-      - "9094:9094" # Expose the new internal port for clarity
-    environment:
-      KAFKA_ENABLE_KRAFT: ${KAFKA_ENABLE_KRAFT}
-      KAFKA_CFG_NODE_ID: ${KAFKA_CFG_NODE_ID}
-      KAFKA_CFG_PROCESS_ROLES: ${KAFKA_CFG_PROCESS_ROLES}
-
-      # 1. Add a new INTERNAL listener on a different port
-      KAFKA_CFG_LISTENERS: ${KAFKA_CFG_LISTENERS}
-
-      # 2. Advertise BOTH listeners with their correct hostnames
-      KAFKA_CFG_ADVERTISED_LISTENERS: ${KAFKA_CFG_ADVERTISED_LISTENERS}
-
-      # 3. Map the new listener to a security protocol
-      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: ${KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP}
-      
-      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: ${KAFKA_CFG_CONTROLLER_QUORUM_VOTERS}
-      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: ${KAFKA_CFG_CONTROLLER_LISTENER_NAMES}
-
-      # 4. Set the inter-broker listener to the new INTERNAL one
-      KAFKA_CFG_INTER_BROKER_LISTENER_NAME: ${KAFKA_CFG_INTER_BROKER_LISTENER_NAME}
-
-      KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR: ${KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR}
-      KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: ${KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR}
-      KAFKA_CFG_TRANSACTION_STATE_LOG_MIN_ISR: ${KAFKA_CFG_TRANSACTION_STATE_LOG_MIN_ISR}
-      ALLOW_PLAINTEXT_LISTENER: ${ALLOW_PLAINTEXT_LISTENER}
+    image: apache/kafka:3.7.0
+    container_name: kafka-local
+    hostname: kafka
     networks:
       - app-network
+
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+
+    environment:
+      KAFKA_NODE_ID: "1"
+      KAFKA_CLUSTER_ID: "cluster-1"
+
+    # matching the Kubernetes command script
+    command:
+      - /bin/sh
+      - -c
+      - |
+        set -e
+
+        cat <<EOF > /opt/kafka/config/kraft/server.properties
+        process.roles=broker,controller
+        node.id=1
+        controller.quorum.voters=1@kafka:9093
+        controller.listener.names=CONTROLLER
+
+        listeners=INTERNAL://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+        advertised.listeners=INTERNAL://kafka:9092
+
+        listener.security.protocol.map=INTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+        inter.broker.listener.name=INTERNAL
+
+        num.partitions=3
+        offsets.topic.replication.factor=1
+        transaction.state.log.replication.factor=1
+        transaction.state.log.min.isr=1
+
+        log.retention.hours=1
+        log.retention.bytes=134217728
+        log.segment.bytes=67108864
+        log.cleaner.enable=true
+
+        log.dirs=/tmp/kraft-combined-logs
+        EOF
+
+        echo "Formatting storage..."
+        /opt/kafka/bin/kafka-storage.sh format \
+          --ignore-formatted \
+          --cluster-id=$(/opt/kafka/bin/kafka-storage.sh random-uuid) \
+          --config /opt/kafka/config/kraft/server.properties
+
+        echo "Starting Kafka..."
+        exec /opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/kraft/server.properties
+
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: "384M"
+        reservations:
+          cpus: "0.05"
+          memory: "128M"
+
+    # Required so other services can depend_on: kafka: service_healthy
     healthcheck:
-      test: ["CMD", "kafka-topics.sh", "--bootstrap-server", "kafka:9092", "--list"]
+      test: ["CMD", "bash", "-c", "kafka-broker-api-versions.sh --bootstrap-server kafka:9092 > /dev/null 2>&1"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -239,9 +292,6 @@ services:
 
 volumes:
   pgdata:
-  prometheus_data:
-  grafana_data:
 
 networks:
   app-network:
-  monitoring:
