@@ -1,19 +1,19 @@
 # app-services image tags
 auth-user-service:
   image:
-    tag: "915de32" 
+    tag: "7324097" 
 
 gateway-service:
   image:
-    tag: "3860133" 
+    tag: "736abd2" 
 
 problem-service:
   image:
-    tag: "e9a56ba" 
+    tag: "52e0328" 
 
 code-manage-service:
   image:
-    tag: "latest" 
+    tag: "7b75a7e" 
 
 code-execution-service:
   image:
