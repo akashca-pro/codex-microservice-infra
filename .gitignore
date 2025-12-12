@@ -2,4 +2,6 @@
 services
 k8s/01-secrets.yaml
 *.pem
+*.key
 helm/common/values.yaml
+codex-certs

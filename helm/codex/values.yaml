@@ -1,15 +1,15 @@
 # app-services image tags
 auth-user-service:
   image:
-    tag: "latest" 
+    tag: "915de32" 
 
 gateway-service:
   image:
-    tag: "latest" 
+    tag: "3860133" 
 
 problem-service:
   image:
-    tag: "latest" 
+    tag: "e9a56ba" 
 
 code-manage-service:
   image:
