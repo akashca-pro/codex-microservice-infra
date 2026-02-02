@@ -9,7 +9,7 @@ gateway-service:
 
 problem-service:
   image:
-    tag: "52e0328" 
+    tag: "68c8e73" 
 
 code-manage-service:
   image:
