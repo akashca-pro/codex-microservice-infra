@@ -4,7 +4,7 @@ dependencies:
   version: 1.0.3
 - name: common
   repository: file://../common
-  version: 1.0.7
+  version: 1.0.8
 - name: auth-user-service
   repository: file://../auth-user
   version: 1.0.6
@@ -23,5 +23,5 @@ dependencies:
 - name: code-execution-service
   repository: file://../code-execution
   version: 1.0.12
-digest: sha256:04fc68ab4c0b1cd91fa9ca8e0bdc88d1dd4a28800cacc1b8e38ed6d94e34f91e
-generated: "2025-12-04T14:33:31.185394+05:30"
+digest: sha256:c3d39c506de0e01e9b7a41f8b4d2126f4702705828fe5bb49a58a6ee7fd55b7e
+generated: "2026-02-02T19:46:12.818999+05:30"
