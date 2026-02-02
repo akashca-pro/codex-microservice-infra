@@ -9,7 +9,7 @@ dependencies:
     version: 1.0.3
     repository: "file://../common-lib"
   - name: common
-    version: 1.0.7
+    version: 1.0.8
     repository: "file://../common"
   - name: auth-user-service
     version: 1.0.6
